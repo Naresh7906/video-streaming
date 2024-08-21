@@ -14,21 +14,28 @@ export function ReceiveStream() {
         .getUserMedia({ video: true, audio: true })
         .then(function (mediaStream) {
           var constraints = {
-            'mandatory': {
-                'OfferToReceiveAudio': true,
-                'OfferToReceiveVideo': true
+            mandatory: {
+              OfferToReceiveAudio: true,
+              OfferToReceiveVideo: true,
             },
             offerToReceiveAudio: 1,
             offerToReceiveVideo: 1,
-        }
+          };
           const call = peer
-            .call("bced75fa-80fa-4a4a-8fc0-bc52724a1b6f", mediaStream, constraints)
+            .call(
+              "bced75fa-80fa-4a4a-8fc0-bc52724a1b6f",
+              mediaStream,
+              constraints
+            )
             .on("stream", function (remoteStream) {
               console.log("Receiving stream", remoteStream);
               videoRefReceive.current.srcObject = remoteStream;
               videoRefReceive.current.onloadedmetadata = function (e) {
                 videoRefReceive.current.play();
-                console.log("Playing remote stream", videoRefReceive.current.srcObject.getVideoTracks());
+                console.log(
+                  "Playing remote stream",
+                  videoRefReceive.current.srcObject.getVideoTracks()
+                );
               };
             });
         });
@@ -41,7 +48,6 @@ export function ReceiveStream() {
           ref={videoRefReceive}
           height={"100%"}
           width={"100%"}
-          
           id="remote-video"
         ></video>
       </Grid>
